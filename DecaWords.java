@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import java.io.File;
 import java.io.IOException;
 import java.util.Objects;
@@ -67,4 +68,9 @@ public class DecaWords {
         System.out.println(word);
         return word;
     }
+=======
+public class DecaWords {
+
+    
+>>>>>>> 91afd9e223b5a83badde5248854caba2a63f6547
 }
