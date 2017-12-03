@@ -1,67 +1,79 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-package decawords;
-
 import java.io.File;
-import java.io.FileNotFoundException;
-import static java.lang.Math.random;
+import java.io.IOException;
 import java.util.Objects;
 import java.util.Random;
 import java.util.Scanner;
 
-/**
- *
- * @author user
- */
 public class DecaWords {
 
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String[] args) throws FileNotFoundException {
-        
-    File text = new File("engmix.txt");
-   Scanner scnr = new Scanner(text);
-   Random rand = new Random();
-    int value = rand.nextInt(84090) + 1;
-    String rword = "";
-    for( int i=0; i<value; i++){
-        rword = scnr.nextLine();
-    }
-    
-            
-        String nword = rword;
-        nword = ShuffleString.shuffle(nword);
-        System.out.println(nword);
-      
-       Scanner keyboard = new Scanner(System.in);
-       System.out.print("Arrange the word in right order:");
-        String uword = keyboard.next();
-       
+    public static void main(String[] args) throws IOException {
+        //System.out.print(new File(".").getAbsoluteFile());
+
+        // get the player name
+        Scanner input = new Scanner(System.in);
+        System.out.print("Enter Your name: ");
+        String user_name = input.nextLine();
+
+        // get the file.
+        File my_file = new File("src/engmix.txt");
+        Scanner scn = new Scanner(my_file);
+
         int points = 0;
-        if(Objects.equals(rword, uword)){
+        for(int i = 0; i < 10; i++){
+            int point = runner(scn);
+            points += point;
+            System.out.printf("Your Total point is %d. \n", points);
+        }
+
+        if(points > 50){
+            System.out.printf("%s, you are the student of the year. \n", user_name);
+        } else {
+            System.out.printf("%s, I know you can do better than this. Best of luck for the next time.", user_name);
+        }
+
+    }
+
+    private static int runner(Scanner scn) {
+        String random_word = get_random_word(scn); // get random word.
+
+        ShuffleString shuffle = new ShuffleString(random_word);
+        String shuffled_word = shuffle.getWord(); // get the string with shuffled letters.
+        System.out.printf("Guess this word: %s. \n", shuffled_word);
+
+        // take the user input
+        Scanner keyboard = new Scanner(System.in);
+        System.out.print("Your answer: ");
+        String input = keyboard.nextLine();
+
+        // help
+        if(Objects.equals(input, "help")){
+            System.out.printf("The word starts with %s and ends with %s. \n", random_word.charAt(0), random_word.charAt(random_word.length()-1));
+            System.out.print("Want to guess now? Your answer is: ");
+            input = keyboard.nextLine();
+        }
+
+        // verdict
+        int points = 0;
+        if(Objects.equals(input, random_word)){
+            System.out.print("Oh yeah. That's how we do it. ");
             points += 10;
         } else {
+            System.out.printf("Oops. The right word is %s. ", random_word);
             points -= 10;
-        }   
-        System.out.print("\n"+ rword);
-        System.out.print("\n"+points);
-//  int points = 0;
-//        if(Objects.equals(random_word, shuffled_word)){
-//            points += 10;
-//        } else {
-//            points -= 10;
-//        }      
-////   for (int j = nam.length - 1; j>=0; j--)
-//       
-//       System.out.print(  nam[j]);
-//       
-//       }
-   
-}}
-            
+        }
+        System.out.printf("you got %d. \n", points);
+        return points;
+    }
 
 
+    private static String get_random_word(Scanner scn) {
+
+        Random rand = new Random();
+        int num = rand.nextInt(10000);
+
+        String word ="";
+        for (int i = 0; i < num; i++){
+            word = scn.nextLine();
+        }
+        return word;
+    }}
